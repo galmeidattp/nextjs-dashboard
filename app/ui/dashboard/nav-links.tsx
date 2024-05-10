@@ -8,25 +8,38 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import { auth } from '@/auth';
+import { User } from '@/app/lib/definitions';
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const links = [
-  { name: 'Home', href: '/dashboard', icon: HomeIcon },
+  { name: 'Home', href: '/dashboard', icon: HomeIcon, role: 'any' },
   {
     name: 'Invoices',
     href: '/dashboard/invoices',
     icon: DocumentDuplicateIcon,
+    role: 'admin',
   },
-  { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
+  {
+    name: 'Customers',
+    href: '/dashboard/customers',
+    icon: UserGroupIcon,
+    role: 'any',
+  },
 ];
 
-export default function NavLinks() {
+export default function NavLinks({ user }) {
   const pathname = usePathname();
+
+  console.log(user);
 
   return (
     <>
       {links.map((link) => {
+        console.log(user.role, link.role);
+        if (link.role !== 'any' && user.role !== link.role) return;
+
         const LinkIcon = link.icon;
         return (
           <Link
@@ -46,4 +59,7 @@ export default function NavLinks() {
       })}
     </>
   );
+}
+function useAuth() {
+  throw new Error('Function not implemented.');
 }

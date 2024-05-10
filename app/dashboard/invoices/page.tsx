@@ -7,6 +7,7 @@ import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchInvoicesPages } from '@/app/lib/data';
 import { Metadata } from 'next';
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
   title: 'Invoices',
@@ -20,6 +21,13 @@ export default async function Page({
     page?: string;
   };
 }) {
+  const session = await auth();
+  const user = session?.user;
+
+  if (user?.role !== 'admin') {
+    return <div>Unauthorized</div>;
+  }
+
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
 

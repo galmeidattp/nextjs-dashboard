@@ -8,8 +8,11 @@ import {
   RevenueChartSkeleton,
   CardsSkeleton,
 } from '@/app/ui/skeletons';
+import { auth } from '@/auth';
 
 export default async function Page() {
+  const session = await auth();
+  const user = session?.user;
   return (
     <main>
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>

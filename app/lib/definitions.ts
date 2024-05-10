@@ -7,7 +7,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  role: string;
+  is_admin: boolean;
 };
 
 export type Customer = {
